@@ -91,6 +91,7 @@ def edit_user(request, pk):
 
 @api_view(["DELETE"])
 def delete_user(request, pk):
+    print(pk)
     try:
         user = NewUser.objects.get(id = pk)
         user.delete()
@@ -98,6 +99,6 @@ def delete_user(request, pk):
         return JsonResponse({"detail": "User deleted succesfully!"})
     
     except NewUser.DoesNotExist:
-        return JsonResponse({"detail": "User doesn't not exists"})
+        return JsonResponse({"error": "User doesn't not exists"})
                 
         

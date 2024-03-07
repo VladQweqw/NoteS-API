@@ -120,6 +120,17 @@ USE_TZ = True
 
 AUTH_USER_MODEL = 'users.NewUser'
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_HTTPONLY = False
 # CSRF_TRUSTED_ORIGINS = [
@@ -135,4 +146,4 @@ STATIC_URL = 'static/'
 CSRF_COOKIE_SECURE = False
 CSRF_COOKIE_SAMESITE = None
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']

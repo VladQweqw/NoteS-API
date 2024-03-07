@@ -51,6 +51,7 @@ def notes_add(request):
     
     serializer = NoteSerializer(data = request.data)
     user = NewUser.objects.get(id = userId)
+    print(user, userId)
     
     if user is not None:    
         if serializer.is_valid():

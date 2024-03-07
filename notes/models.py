@@ -4,7 +4,7 @@ import datetime
 import time
 
 class Note(models.Model):
-    title = models.CharField(max_length = 100, unique=True, error_messages = {'unique': 'File with same title already exists!'}, default=f"Note_{datetime.date.today}")
+    title = models.CharField(max_length = 100, default=f"Note_{datetime.date.today}")
     content = models.TextField(blank=True)
     creationDate = models.DateTimeField(auto_now_add=True)
     lastUpdate = models.IntegerField(blank=True, null=True, default = time.time() * 1000)

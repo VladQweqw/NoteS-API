@@ -1,1 +1,5 @@
 .venv
+.venv/
+
+notes/__pycache__/
+users/__pycache__/

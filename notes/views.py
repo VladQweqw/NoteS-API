@@ -102,3 +102,21 @@ def notes_delete(request, pk):
     
     except NewUser.DoesNotExist:
         return JsonResponse({"detail": "User doesn't not exists"})
+ 
+@api_view(['POST'])
+def notes_pin(request):
+    userId = request.data.get('user') 
+    note_id = request.data.get('id') 
+    
+    try:
+        user = NewUser.objects.get(id = userId)
+        to_pin_note = Note.objects.filter(user = user).get(id = note_id)
+        print(f"NOTE: {notes}")
+        
+        # serializer = NoteSerializer(notes, many=True)
+        
+        return Response({'detail': "Pinned succesfully"}, status=status.HTTP_200_OK)
+    except NewUser.DoesNotExist:
+        return Response({"error":"User does not exists"}, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

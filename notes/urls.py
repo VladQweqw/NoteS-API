@@ -26,6 +26,7 @@ urlpatterns = [
     path('notes/add/', views.notes_add),
     path('notes/update/<int:pk>/', views.notes_update),
     path('notes/delete/<int:pk>/', views.notes_delete),
+    path('notes/pin/', views.notes_pin),
     
     path('', include('users.urls'))
 ]

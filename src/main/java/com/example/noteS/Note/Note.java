@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 
@@ -13,10 +15,18 @@ public class Note {
     private String id;
 
     private String title;
-    private String content;
-    private Date creationDate;
-    private Date lastUpdate;
+    private String content = "";
+    private String creationDate = getCurrentDate();
+    private String lastUpdate = getCurrentDate();
     private String author;
+
+    private String getCurrentDate() {
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formatted = currentDate.format(formatter);
+
+        return formatted;
+    }
 
     @Override
     public String toString() {
@@ -33,7 +43,7 @@ public class Note {
     public Note() {
     }
 
-    public Note(String title, String content, Date creationDate, Date lastUpdate, String author) {
+    public Note(String title, String content, String creationDate, String lastUpdate, String author) {
         this.title = title;
         this.content = content;
         this.creationDate = creationDate;
@@ -41,7 +51,7 @@ public class Note {
         this.author = author;
     }
 
-    public Note(String id, String title, String content, Date creationDate, Date lastUpdate, String author) {
+    public Note(String id, String title, String content, String creationDate, String lastUpdate, String author) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -62,11 +72,11 @@ public class Note {
         this.content = content;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
+    public void setLastUpdate(String  lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 
@@ -86,11 +96,11 @@ public class Note {
         return content;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public Date getLastUpdate() {
+    public String getLastUpdate() {
         return lastUpdate;
     }
 

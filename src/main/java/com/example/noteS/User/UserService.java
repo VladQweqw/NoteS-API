@@ -36,6 +36,10 @@ public class UserService {
                 throw new Exception("Invalid data");
             }
 
+            if(userRepository.getUserByEmail(userData.getEmail()) != null) {
+                throw new Exception("Email already taken!");
+            }
+
             if(userData.getNickname().length() < 2) {
                 throw new Exception("Nickname must be at least 3 letters");
             }

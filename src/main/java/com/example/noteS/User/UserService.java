@@ -7,6 +7,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private UserRepository userRepository;
@@ -51,7 +53,9 @@ public class UserService {
             userData.setPassword(
                     hashPassword(userData.getPassword())
             );
-            return ResponseEntity.ok(userRepository.save(userData));
+
+            userRepository.save(userData);
+            return ResponseEntity.ok(new UserDTO(userData));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new CustomResponseError(400, e.getMessage()));
@@ -74,10 +78,69 @@ public class UserService {
                 throw new Exception("Invalid email or password");
             }
 
-            return ResponseEntity.ok(found_user);
+            userRepository.save(found_user);
+            return ResponseEntity.ok(new UserDTO(found_user));
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new CustomResponseError(400, e.getMessage()));
+        }
+    }
+
+    public ResponseEntity<?> updateUser(String id, String nickname, String email, String password) {
+        try {
+            Optional<User> user = userRepository.findById(id);
+
+            if(!user.isPresent()) {
+                throw new Exception("Invalid user ID");
+            }
+
+            if(nickname != null) {
+                if(nickname.length() > 2) {
+                    user.get().setNickname(nickname);
+                }else {
+                    throw new Exception("Password must be at least 3 letters long");
+                }
+            }
+
+            if(email != null) {
+                if(email.length() > 2) {
+                    user.get().setEmail(email);
+                }else {
+                    throw new Exception("Email must be at least 3 letters long");
+                }
+            }
+
+            if(password != null) {
+                if(email.length() > 2) {
+                    user.get().setPassword(
+                            hashPassword(password)
+                    );
+                }else {
+                    throw new Exception("Email must be at least 3 letters long");
+                }
+            }
+
+            return ResponseEntity.ok(new UserDTO(user.get()));
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CustomResponseError(400, "Invalid user ID"));
+        }
+    }
+
+    public ResponseEntity<?> removeUser(String id) {
+        try {
+            Optional<User> user = userRepository.findById(id);
+
+            if(user.isPresent()) {
+                userRepository.delete(user.get());
+            }else {
+                throw new Exception("Invalid user ID");
+            }
+
+            return ResponseEntity.ok("User deleted");
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CustomResponseError(400, "Invalid user ID"));
         }
     }
 }

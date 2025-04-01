@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public interface NoteRepository extends MongoRepository<Note, String> {
 
-    @Query("{ 'author': ?0 }")
+    @Query("{author: ?0}")
     public ArrayList<Note> getAllUserNotes(String id);
 
     @Query("{ 'email': ?0}")

@@ -20,11 +20,19 @@ public class NoteController {
         return noteService.check();
     }
 
-    @GetMapping("all")
+    @GetMapping("user/{user_id}")
     public ResponseEntity<?> getUserNotes(
-            @PathVariable(required = false) String user_id
+            @PathVariable String user_id
     ) {
         return noteService.getNotes(user_id);
+    }
+
+    @GetMapping("{note_id}")
+    public ResponseEntity<?> getNoteById(
+            @PathVariable String note_id,
+            @RequestParam String user_id
+    ) {
+        return noteService.getNoteById(note_id, user_id);
     }
 
     @PostMapping("")

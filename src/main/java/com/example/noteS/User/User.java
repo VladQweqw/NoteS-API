@@ -1,6 +1,7 @@
 package com.example.noteS.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -17,10 +18,7 @@ public class User {
     @Indexed(unique = true)
     private String email;
     private String nickname;
-    @JsonIgnore
     private String password;
-
-
     private String creation_date = getCurrentDate();
 
     public User() {

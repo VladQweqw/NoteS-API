@@ -33,4 +33,21 @@ public class UserController {
     ) {
        return userService.login(credentials);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> update(
+            @PathVariable String id,
+            @RequestParam(required = false) String nickname,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String password
+    ) {
+        return userService.updateUser(id, nickname, email, password);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> delete(
+            @PathVariable String id
+    ) {
+        return userService.removeUser(id);
+    }
 }

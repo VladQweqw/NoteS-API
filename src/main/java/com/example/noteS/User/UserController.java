@@ -1,8 +1,7 @@
 package com.example.noteS.User;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 
 @CrossOrigin()
@@ -18,5 +17,12 @@ public class UserController {
 
     public String check() {
         return userService.check();
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> createUser(
+            @RequestBody User user_data
+    ) {
+        return userService.createUser(user_data);
     }
 }

@@ -23,7 +23,6 @@ public class NoteService {
         this.userRepository = userRepository;
     }
 
-
     // default route to check if the API route is working
     public String check() {
         return "Success";
@@ -85,6 +84,67 @@ public class NoteService {
 
                 return ResponseEntity.ok(noteRepository.save(note_data));
             }
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CustomResponseError(400, e.getMessage()));
+        }
+    }
+
+    public ResponseEntity<?> updateNote(String id, String user_id, String new_title, String new_content) {
+        try {
+            if(id == null) {
+                throw new Exception("Invalid note ID");
+            }
+
+            Optional<Note> note = noteRepository.findById(id);
+            if(!note.isPresent()) {
+                throw new Exception("Invalid note ID");
+            }
+
+            Optional<User> user_given = userRepository.findById(user_id);
+            Optional<User> real_user = userRepository.findById(note.get().getAuthor());
+
+            if(!user_given.isPresent() || !user_given.get().getId().equals(real_user.get().getId())) {
+                throw new Exception("Invalid User");
+            }
+
+            if(new_title != null) {
+                note.get().setTitle(new_title);
+            }
+
+            if(new_content != null) {
+                note.get().setContent(new_content);
+            }
+
+            return ResponseEntity.ok(
+                    noteRepository.save(note.get())
+            );
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new CustomResponseError(400, e.getMessage()));
+        }
+    }
+
+    public ResponseEntity<?> deleteNote(String id, String user_id) {
+        try {
+            if(id == null) {
+                throw new Exception("Invalid note ID");
+            }
+
+            Optional<Note> note = noteRepository.findById(id);
+            if(!note.isPresent()) {
+                throw new Exception("Invalid note ID");
+            }
+
+            Optional<User> user_given = userRepository.findById(user_id);
+            Optional<User> real_user = userRepository.findById(note.get().getAuthor());
+
+            if(!user_given.isPresent() || !user_given.get().getId().equals(real_user.get().getId())) {
+                throw new Exception("Invalid User");
+            }
+
+            noteRepository.delete(note.get());
+            return ResponseEntity.ok("Note deleted");
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new CustomResponseError(400, e.getMessage()));

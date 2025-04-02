@@ -3,11 +3,10 @@ package com.example.noteS.Note;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
-@CrossOrigin
+@CrossOrigin()
 @RestController
 @RequestMapping("/api/note")
+
 public class NoteController {
     private NoteService noteService;
 
@@ -40,6 +39,24 @@ public class NoteController {
             @RequestBody Note note_data
     ) {
         return noteService.createNote(note_data);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> updateNote(
+            @PathVariable String id,
+            @RequestParam String user_id,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String content
+    ) {
+        return noteService.updateNote(id, user_id, title, content);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<?> updateNote(
+            @RequestParam String user_id,
+            @PathVariable String id
+    ) {
+        return noteService.deleteNote(id, user_id);
     }
 
 }
